@@ -20,14 +20,19 @@ export default function ScreenEffects({ children }) {
         };
 
         window.spawnParticles = (x, y, count = 10, color = '#ff6b6b') => {
+            // Get canvas offset from page - particles are in fixed position layer
+            const gameArea = document.querySelector('[data-game-area]');
+            const offsetX = gameArea ? gameArea.getBoundingClientRect().left : 0;
+            const offsetY = gameArea ? gameArea.getBoundingClientRect().top : 0;
+
             const newParticles = [];
             for (let i = 0; i < count; i++) {
                 const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
                 const speed = 3 + Math.random() * 5;
                 newParticles.push({
                     id: particleIdRef.current++,
-                    x,
-                    y,
+                    x: x + offsetX, // Add canvas offset
+                    y: y + offsetY, // Add canvas offset
                     vx: Math.cos(angle) * speed,
                     vy: Math.sin(angle) * speed,
                     size: 4 + Math.random() * 8,
