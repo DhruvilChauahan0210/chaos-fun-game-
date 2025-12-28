@@ -16,6 +16,7 @@ import {
     createBlackHole,
     ragdollRain,
 } from '@/lib/physics/special';
+import { getGravity, setGravity } from '@/lib/physics/engine';
 import { CANVAS } from '@/lib/constants';
 import styles from './ChaosPanel.module.css';
 
@@ -24,6 +25,14 @@ export default function ChaosPanel({ onChaosToggle, onTimeControl, onSoundToggle
     const [floodOn, setFloodOn] = useState(false);
     const [rulesOn, setRulesOn] = useState(false);
     const [soundOn, setSoundOn] = useState(true);
+    const [gravityDir, setGravityDir] = useState('down'); // down, right, up, left
+
+    const GRAVITY_DIRECTIONS = {
+        down: { x: 0, y: 1, icon: '⬇️', label: 'DOWN' },
+        right: { x: 1, y: 0, icon: '➡️', label: 'RIGHT' },
+        up: { x: 0, y: -1, icon: '⬆️', label: 'UP' },
+        left: { x: -1, y: 0, icon: '⬅️', label: 'LEFT' },
+    };
 
     const handleChaosToggle = useCallback(() => {
         const newState = toggleChaos();
@@ -64,6 +73,15 @@ export default function ChaosPanel({ onChaosToggle, onTimeControl, onSoundToggle
         if (onSoundToggle) onSoundToggle(newState);
     }, [soundOn, onSoundToggle]);
 
+    const handleGravityToggle = useCallback(() => {
+        const directions = ['down', 'right', 'up', 'left'];
+        const currentIndex = directions.indexOf(gravityDir);
+        const nextDir = directions[(currentIndex + 1) % 4];
+        const newGravity = GRAVITY_DIRECTIONS[nextDir];
+        setGravity({ x: newGravity.x, y: newGravity.y });
+        setGravityDir(nextDir);
+    }, [gravityDir]);
+
     return (
         <div className={styles.panel}>
             <h3 className={styles.title}>
@@ -94,6 +112,14 @@ export default function ChaosPanel({ onChaosToggle, onTimeControl, onSoundToggle
                     🎲 Rules
                 </button>
             </div>
+
+            {/* Gravity toggle */}
+            <button
+                className={`${styles.toggleBtn} ${styles.gravityBtn}`}
+                onClick={handleGravityToggle}
+            >
+                {GRAVITY_DIRECTIONS[gravityDir].icon} Gravity {GRAVITY_DIRECTIONS[gravityDir].label}
+            </button>
 
             {/* Instant actions - Row 1 */}
             <div className={styles.actions}>
@@ -132,13 +158,6 @@ export default function ChaosPanel({ onChaosToggle, onTimeControl, onSoundToggle
                 {soundOn ? '🔊' : '🔇'} Sound
             </button>
 
-            {/* Keyboard hints */}
-            <div className={styles.hints}>
-                <span><kbd>C</kbd> Chaos</span>
-                <span><kbd>H</kbd> Hole</span>
-                <span><kbd>T</kbd> Time</span>
-                <span><kbd>G</kbd> Ragdoll</span>
-            </div>
         </div>
     );
 }

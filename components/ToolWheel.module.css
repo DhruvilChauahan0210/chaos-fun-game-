@@ -1,169 +1,102 @@
-.container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-}
-
-.currentTool {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 24px;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
-    border: 2px solid;
-    border-radius: 50px;
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow:
-        0 0 30px rgba(var(--tool-color), 0.3),
-        0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.currentTool:hover {
-    transform: scale(1.05);
-    box-shadow:
-        0 0 40px rgba(var(--tool-color), 0.4),
-        0 12px 40px rgba(0, 0, 0, 0.4);
-}
-
-.toolIcon {
-    font-size: 24px;
-}
-
-.toolLabel {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-}
-
-.expandIcon {
-    font-size: 10px;
-    opacity: 0.6;
-    transition: transform 0.3s ease;
-}
-
-.currentTool:hover .expandIcon {
-    transform: translateY(-2px);
-}
-
-/* Radial wheel */
-.wheel {
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 250px;
-    height: 250px;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.wheel.open {
-    pointer-events: auto;
-    opacity: 1;
-}
-
-.toolOption {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 12px;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
-    border: 2px solid var(--tool-color);
-    border-radius: 16px;
-    color: white;
-    cursor: pointer;
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    transition-delay: var(--delay);
-}
-
-.wheel.open .toolOption {
-    opacity: 1;
-    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y)));
-}
-
-.toolOption:hover {
-    background: var(--tool-color);
-    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.15);
-    z-index: 10;
-}
-
-.toolOption.selected {
-    background: var(--tool-color);
-    box-shadow: 0 0 20px var(--tool-color);
-}
-
-.optionIcon {
-    font-size: 28px;
-}
-
-.optionLabel {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.shortcut {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    color: black;
-    font-size: 11px;
-    font-weight: 700;
-    border-radius: 50%;
-}
-
-/* Quick toolbar */
-.quickBar {
+/* Minecraft-style Hotbar */
+.hotbar {
     display: flex;
     gap: 8px;
-    padding: 8px 16px;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 16px;
+    background: var(--bg-dark);
+    border: 3px solid var(--border-light);
+    border-radius: 6px;
+    box-shadow:
+        0 4px 0 0 var(--border-dark),
+        inset 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
-.quickTool {
-    width: 44px;
-    height: 44px;
+/* Individual Slot */
+.slot {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid transparent;
-    border-radius: 12px;
-    font-size: 20px;
+    gap: 4px;
+    width: 90px;
+    height: 75px;
+    padding: 8px;
+    background: var(--bg-button);
+    border: 3px solid var(--border-light);
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.1s ease;
+    position: relative;
+    box-shadow:
+        0 4px 0 0 var(--border-dark),
+        inset 0 -3px 0 0 rgba(0, 0, 0, 0.3);
 }
 
-.quickTool:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+.slot:hover {
+    background: var(--color-blue);
+    transform: translateY(-3px);
+    box-shadow:
+        0 7px 0 0 var(--border-dark),
+        inset 0 -3px 0 0 rgba(0, 0, 0, 0.3);
 }
 
-.quickTool.active {
-    border-color: var(--tool-color);
-    background: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 15px var(--tool-color);
+.slot:active {
+    transform: translateY(2px);
+    box-shadow:
+        0 1px 0 0 var(--border-dark);
+}
+
+/* Active/Selected Slot */
+.activeSlot {
+    background: var(--bg-panel);
+    border-color: var(--tool-color, var(--color-cyan));
+    box-shadow:
+        0 4px 0 0 var(--border-dark),
+        0 0 20px var(--tool-color, var(--color-cyan)),
+        inset 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.activeSlot:hover {
+    background: var(--bg-panel);
+}
+
+/* Slot Number Badge */
+.slotNumber {
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--color-yellow);
+    text-shadow: 1px 1px 0 var(--border-dark);
+}
+
+/* Slot Icon */
+.slotIcon {
+    font-size: 28px;
+    line-height: 1;
+}
+
+/* Slot Label */
+.slotLabel {
+    font-family: var(--font-retro);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-light);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* Hide old styles (keeping for compatibility) */
+.container,
+.currentTool,
+.wheel,
+.toolOption,
+.quickBar,
+.quickTool {
+    display: none !important;
 }

@@ -1,30 +1,49 @@
 .container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    padding: 16px;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(20px);
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    min-width: 200px;
+    gap: 5px;
+    padding: 10px;
+    background: var(--bg-panel);
+    border: 3px solid var(--color-teal);
+    border-radius: 4px;
+    width: 100%;
+    max-height: calc(100vh - 80px);
+    overflow-y: auto;
+    box-shadow:
+        0 3px 0 0 #0d6b5a,
+        inset 0 0 20px rgba(26, 188, 156, 0.1);
+    position: relative;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    right: 3px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .title {
     margin: 0;
-    font-size: 14px;
-    font-weight: 700;
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--color-teal);
+    text-shadow: 1px 1px 0 var(--border-dark);
 }
 
+/* Tab Navigation */
 .tabs {
     display: flex;
     gap: 4px;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-dark);
     padding: 4px;
-    border-radius: 12px;
+    border: 3px solid var(--border-light);
+    border-radius: 4px;
 }
 
 .tab {
@@ -32,110 +51,130 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
-    padding: 8px 12px;
+    gap: 3px;
+    padding: 6px 6px;
     background: transparent;
-    border: none;
-    border-radius: 8px;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 11px;
-    font-weight: 600;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    color: var(--text-dim);
+    font-family: var(--font-retro);
+    font-size: 13px;
+    font-weight: 400;
     text-transform: capitalize;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.1s ease;
 }
 
 .tab:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
+    background: var(--bg-button);
+    color: var(--text-white);
 }
 
 .activeTab {
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
+    background: var(--color-teal);
+    border-color: #0d6b5a;
+    color: var(--bg-dark);
+    box-shadow: 0 2px 0 0 #095245;
 }
 
+/* Object List - Vertical Layout */
 .grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .objectBtn {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 6px;
-    padding: 12px 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid transparent;
-    border-radius: 12px;
+    padding: 6px 8px;
+    background: var(--bg-button);
+    border: 2px solid var(--border-light);
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.1s ease;
     position: relative;
+    box-shadow: 0 2px 0 0 var(--border-dark);
 }
 
 .objectBtn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--color-blue);
     transform: translateY(-2px);
+    box-shadow: 0 5px 0 0 var(--border-dark);
+}
+
+.objectBtn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 0 var(--border-dark);
 }
 
 .objectBtn.selected {
-    border-color: var(--obj-color);
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    border-color: var(--obj-color, var(--color-cyan));
+    background: var(--bg-panel);
+    box-shadow:
+        0 3px 0 0 var(--border-dark),
+        0 0 15px rgba(0, 255, 255, 0.3);
 }
 
+/* Object Previews */
 .preview {
-    width: 40px;
-    height: 40px;
+    width: 28px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    opacity: 0.9;
 }
 
 .boxPreview {
-    width: 24px;
-    height: 24px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
+    width: 16px;
+    height: 16px;
+    background: var(--color-orange);
+    border: 2px solid #cc7a00;
+    box-shadow: 0 2px 0 0 #995c00;
 }
 
 .circlePreview {
-    width: 24px;
-    height: 24px;
-    background: rgba(255, 255, 255, 0.3);
+    width: 16px;
+    height: 16px;
+    background: var(--color-cyan);
+    border: 2px solid #00b3b3;
     border-radius: 50%;
+    box-shadow: 0 2px 0 0 #008080;
 }
 
 .trianglePreview {
     width: 0;
     height: 0;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-bottom: 22px solid rgba(255, 255, 255, 0.3);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 14px solid var(--color-green);
+    filter: drop-shadow(0 2px 0 #1a6b1a);
 }
 
 .plankPreview {
-    width: 36px;
-    height: 10px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
+    width: 24px;
+    height: 6px;
+    background: #8b4513;
+    border: 2px solid #5c2d0e;
+    box-shadow: 0 2px 0 0 #3d1c09;
 }
 
 .anvilPreview {
-    width: 28px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.3);
+    width: 18px;
+    height: 14px;
+    background: #4a4a5e;
     clip-path: polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%);
+    border: 2px solid #2a2a3e;
 }
 
 .objectLabel {
-    font-size: 11px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
+    font-family: var(--font-retro);
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-white);
+    flex: 1;
 }
 
 .badge {
@@ -143,26 +182,44 @@
     top: 4px;
     right: 4px;
     font-size: 12px;
+    animation: bounce 1s ease-in-out infinite;
 }
 
+/* Info Box */
 .info {
     padding: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
+    background: var(--bg-dark);
+    border: 3px solid var(--border-light);
+    border-radius: 4px;
     min-height: 60px;
 }
 
 .infoTitle {
-    font-size: 14px;
-    font-weight: 700;
-    color: white;
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--color-yellow);
     margin-bottom: 8px;
+    text-shadow: 1px 1px 0 var(--border-dark);
 }
 
 .infoProps {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.6);
+    font-family: var(--font-retro);
+    font-size: 16px;
+    color: var(--text-dim);
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
 }

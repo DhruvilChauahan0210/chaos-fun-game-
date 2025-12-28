@@ -45,8 +45,19 @@ export default function GameCanvas({
             updateFloatyObjects();
         }, 16);
 
+        // Poll gravity direction to sync indicator
+        const gravityInterval = setInterval(() => {
+            const g = getGravity();
+            if (Math.abs(g.y) > Math.abs(g.x)) {
+                setGravityDirection(g.y > 0 ? 'down' : 'up');
+            } else {
+                setGravityDirection(g.x > 0 ? 'right' : 'left');
+            }
+        }, 100);
+
         return () => {
             clearInterval(floatyInterval);
+            clearInterval(gravityInterval);
             stopEngine();
         };
     }, [onToolUsed]);
@@ -136,9 +147,12 @@ export default function GameCanvas({
             {/* Gravity indicator */}
             <div className={styles.gravityIndicator}>
                 <span className={styles.gravityIcon}>
-                    {gravityDirection === 'down' ? '⬇️' : '⬆️'}
+                    {gravityDirection === 'down' && '⬇️'}
+                    {gravityDirection === 'up' && '⬆️'}
+                    {gravityDirection === 'left' && '⬅️'}
+                    {gravityDirection === 'right' && '➡️'}
                 </span>
-                <span className={styles.gravityLabel}>Gravity</span>
+                <span className={styles.gravityLabel}>GRAVITY</span>
             </div>
 
             {/* Remote cursors */}
